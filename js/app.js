@@ -146,8 +146,10 @@ function showWeatherLoading(locationId) {
     const weatherElement = document.getElementById(`${locationId}-weather`);
     if (weatherElement) {
         weatherElement.innerHTML = `
-            <div class="weather-info loading">
-                <p>Loading weather data...</p>
+            <div class="weather-info">
+                <div class="loading-indicator">
+                    Loading weather data
+                </div>
             </div>
         `;
     }
@@ -155,6 +157,7 @@ function showWeatherLoading(locationId) {
 
 function initializeMap() {
     try {
+        console.log('Initializing map...');
         const mapContainer = document.getElementById('map-container');
         if (!mapContainer) {
             console.error('Map container not found');
@@ -162,10 +165,20 @@ function initializeMap() {
             return;
         }
         
+        // Show loading state
+        mapContainer.innerHTML = '<div class="loading-indicator">Loading map</div>';
+        
         // Check if CONFIG is defined
         if (typeof CONFIG === 'undefined') {
             console.error('Configuration not loaded');
             showMapError('Configuration not loaded. Please check config.js is present.');
+            return;
+        }
+        
+        // Check if Leaflet is loaded
+        if (typeof L === 'undefined') {
+            console.error('Leaflet not loaded');
+            showMapError('Map library not loaded. Please check your internet connection.');
             return;
         }
 
