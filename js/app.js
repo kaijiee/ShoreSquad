@@ -124,6 +124,14 @@ function initializeMap() {
         const mapContainer = document.getElementById('map-container');
         if (!mapContainer) {
             console.error('Map container not found');
+            showMapError('Map container not found');
+            return;
+        }
+        
+        // Check if CONFIG is defined
+        if (typeof CONFIG === 'undefined') {
+            console.error('Configuration not loaded');
+            showMapError('Configuration not loaded. Please check config.js is present.');
             return;
         }
 
@@ -156,13 +164,16 @@ function initializeMap() {
         // Fit map bounds to show all markers
         const bounds = Object.values(CONFIG.BEACHES).map(beach => beach.coordinates);
         map.fitBounds(bounds);
-        
-    } catch (error) {
+          } catch (error) {
         console.error('Error initializing map:', error);
-        const mapContainer = document.getElementById('map-container');
-        if (mapContainer) {
-            mapContainer.innerHTML = '<div class="map-error">Unable to load map</div>';
-        }
+        showMapError(error.message);
+    }
+}
+
+function showMapError(message) {
+    const mapContainer = document.getElementById('map-container');
+    if (mapContainer) {
+        mapContainer.innerHTML = `<div class="map-error">${message}</div>`;
     }
 }
 

@@ -253,6 +253,16 @@ footer {
     color: var(--color-secondary);
 }
 
+/* Map Error Message */
+.map-error {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    padding: 2rem;
+    text-align: center;
+    border-radius: var(--border-radius);
+    margin: 1rem 0;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .nav-links {
