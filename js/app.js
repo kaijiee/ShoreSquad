@@ -1,19 +1,31 @@
 // Main app functionality
 document.addEventListener('DOMContentLoaded', () => {
+    // Ensure CONFIG is loaded
+    if (typeof CONFIG === 'undefined') {
+        console.error('Configuration not loaded. Please check if config.js is loaded properly.');
+        return;
+    }
+    
     initializeApp();
 });
 
 async function initializeApp() {
-    // Initialize map
-    initializeMap();
-    
-    // Initialize weather updates
-    await updateWeatherPreviews();
-    // Update weather every 30 minutes
-    setInterval(updateWeatherPreviews, 30 * 60 * 1000);
+    try {
+        console.log('Initializing app with config:', CONFIG);
+        
+        // Initialize map
+        initializeMap();
+        
+        // Initialize weather updates
+        await updateWeatherPreviews();
+        // Update weather every 30 minutes
+        setInterval(updateWeatherPreviews, 30 * 60 * 1000);
 
-    // Add smooth scrolling for navigation
-    addSmoothScrolling();
+        // Add smooth scrolling for navigation
+        addSmoothScrolling();
+    } catch (error) {
+        console.error('Error initializing app:', error);
+    }
 }
 
 function addSmoothScrolling() {

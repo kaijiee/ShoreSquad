@@ -67,17 +67,29 @@
         </div>
     </footer>    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Check if we're running on GitHub Pages
-        const isGitHubPages = window.location.hostname.includes('github.io');
-        // Load the appropriate config file
-        const configScript = document.createElement('script');
-        configScript.src = isGitHubPages ? 'js/config.prod.js' : 'js/config.js';
-        configScript.onerror = () => {
-            console.error('Failed to load configuration');
-            alert('Failed to load configuration. Please ensure config.js exists.');
-        };
-        document.head.appendChild(configScript);
+        // Load configuration and initialize app
+        function loadApp() {
+            const isGitHubPages = window.location.hostname.includes('github.io');
+            const configScript = document.createElement('script');
+            configScript.src = isGitHubPages ? 'js/config.prod.js' : 'js/config.js';
+            
+            configScript.onload = () => {
+                // Load app.js after config is loaded
+                const appScript = document.createElement('script');
+                appScript.src = 'js/app.js';
+                document.body.appendChild(appScript);
+            };
+            
+            configScript.onerror = () => {
+                console.error('Failed to load configuration');
+                alert('Failed to load configuration. Please ensure config.js exists.');
+            };
+            
+            document.head.appendChild(configScript);
+        }
+        
+        // Start loading the application
+        loadApp();
     </script>
-    <script src="js/app.js"></script>
 </body>
 </html>
