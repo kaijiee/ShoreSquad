@@ -11,61 +11,127 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <header class="main-header">
+<body>    <header class="main-header">
         <nav class="nav-container">
             <div class="logo">
-                <h1>ShoreSquad</h1>
+                <h1>🌊 ShoreSquad</h1>
             </div>
             <ul class="nav-links">
-                <li><a href="#events">Events</a></li>
-                <li><a href="#weather">Weather</a></li>
-                <li><a href="#locations">Locations</a></li>
-                <li><a href="#join" class="cta-button">Join Squad</a></li>
+                <li><a href="#events">🗓️ Events</a></li>
+                <li><a href="#weather">🌤️ Weather</a></li>
+                <li><a href="#locations">📍 Locations</a></li>
+                <li><a href="#join" class="cta-button">🤝 Join Squad</a></li>
             </ul>
+            <button class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </nav>
     </header>
 
     <main>
         <section class="hero">
             <div class="hero-content">
+                <span class="hero-badge">Join the Movement</span>
                 <h2>Make Waves of Change</h2>
-                <p>Join the movement to keep Singapore's beaches clean. Track weather, find events, and connect with fellow beach warriors!</p>
-                <button class="primary-button">Find Next Cleanup</button>
+                <p class="hero-subtitle">Join the movement to keep Singapore's beaches clean. Track weather, find events, and connect with fellow beach warriors!</p>
+                <div class="hero-buttons">
+                    <button class="primary-button">🔍 Find Next Cleanup</button>
+                    <button class="secondary-button">📱 Download App</button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">2,500+</span>
+                        <span class="stat-label">Volunteers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Events</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">5,000kg</span>
+                        <span class="stat-label">Waste Collected</span>
+                    </div>
+                </div>
             </div>
-        </section>
-
-        <section id="locations" class="locations">
-            <h2>Featured Locations</h2>
+            <div class="hero-shape"></div>
+        </section>        <section id="locations" class="locations">
+            <div class="section-header">
+                <h2>Featured Locations</h2>
+                <p class="section-subtitle">Discover Singapore's Beautiful Beaches</p>
+            </div>
             <div id="map-container"></div>
             <div class="location-grid">
                 <div class="location-card" data-location="siloso">
-                    <h3>Siloso Beach</h3>
-                    <div class="weather-preview" id="siloso-weather"></div>
+                    <div class="location-image siloso-bg"></div>
+                    <div class="location-content">
+                        <h3>Siloso Beach</h3>
+                        <p class="location-description">Popular beach on Sentosa Island</p>
+                        <div class="weather-preview" id="siloso-weather"></div>
+                        <button class="location-btn">View Details →</button>
+                    </div>
                 </div>
                 <div class="location-card" data-location="palawan">
-                    <h3>Palawan Beach</h3>
-                    <div class="weather-preview" id="palawan-weather"></div>
+                    <div class="location-image palawan-bg"></div>
+                    <div class="location-content">
+                        <h3>Palawan Beach</h3>
+                        <p class="location-description">Family-friendly beach with suspension bridge</p>
+                        <div class="weather-preview" id="palawan-weather"></div>
+                        <button class="location-btn">View Details →</button>
+                    </div>
                 </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="cta-content">
+                <h2>Ready to Make a Difference?</h2>
+                <p>Join our next beach cleanup event and be part of the solution</p>
+                <button class="primary-button">Join Now</button>
             </div>
         </section>
     </main>
 
     <footer>
         <div class="footer-content">
-            <div class="footer-section">
-                <h4>ShoreSquad</h4>
+            <div class="footer-section brand">
+                <h4>🌊 ShoreSquad</h4>
                 <p>Making beach cleanup fun and connected</p>
+                <div class="social-links">
+                    <a href="#twitter" class="social-link">Twitter</a>
+                    <a href="#instagram" class="social-link">Instagram</a>
+                    <a href="#telegram" class="social-link">Telegram</a>
+                </div>
             </div>
             <div class="footer-section">
-                <h4>Connect</h4>
+                <h4>Quick Links</h4>
                 <ul>
-                    <li><a href="#instagram">Instagram</a></li>
-                    <li><a href="#telegram">Telegram Group</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#events">Events</a></li>
+                    <li><a href="#locations">Locations</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#guide">Cleanup Guide</a></li>
+                    <li><a href="#safety">Safety Tips</a></li>
+                    <li><a href="#faq">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:info@shoresquad.com">info@shoresquad.com</a></li>
+                    <li><a href="tel:+6591234567">+65 9123 4567</a></li>
                 </ul>
             </div>
         </div>
-    </footer>    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <div class="footer-bottom">
+            <p>&copy; 2025 ShoreSquad. All rights reserved.</p>
+        </div>
+    </footer><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // Check if running on GitHub Pages
         if (window.location.hostname.includes('github.io')) {
