@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Configuration files
+js/config.js
+
 # Environment files
 .env
 .env.local
