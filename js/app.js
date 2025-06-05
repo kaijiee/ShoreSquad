@@ -76,10 +76,18 @@ async function updateWeatherPreviews() {
 
 async function fetchWeather(lat, lon) {
     try {
+        if (!CONFIG || !CONFIG.WEATHER_API_KEY) {
+            throw new Error('Weather API key not configured');
+        }
+
         console.log(`Fetching weather for coordinates: ${lat}, ${lon}`);
-        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${CONFIG.WEATHER_API_KEY}`;
-        console.log('Fetching from URL:', url);
+        const url = new URL('https://api.openweathermap.org/data/2.5/weather');
+        url.searchParams.append('lat', lat);
+        url.searchParams.append('lon', lon);
+        url.searchParams.append('units', 'metric');
+        url.searchParams.append('appid', CONFIG.WEATHER_API_KEY);
         
+        console.log('Fetching weather data...');
         const response = await fetch(url);
         console.log('Response status:', response.status);
         
@@ -164,27 +172,23 @@ function initializeMap() {
         console.log('Initializing map...');
         const mapContainer = document.getElementById('map-container');
         if (!mapContainer) {
-            console.error('Map container not found');
-            showMapError('Map container not found');
-            return;
+            throw new Error('Map container not found');
         }
         
         // Show loading state
         mapContainer.innerHTML = '<div class="loading-indicator">Loading map</div>';
         
-        // Check if CONFIG is defined
-        if (typeof CONFIG === 'undefined') {
-            console.error('Configuration not loaded');
-            showMapError('Configuration not loaded. Please check config.js is present.');
-            return;
+        // Check if CONFIG is defined and has required properties
+        if (!CONFIG || !CONFIG.MAP_CENTER || !CONFIG.BEACHES) {
+            throw new Error('Invalid configuration. Missing required map settings.');
         }
         
         // Check if Leaflet is loaded
         if (typeof L === 'undefined') {
-            console.error('Leaflet not loaded');
-            showMapError('Map library not loaded. Please check your internet connection.');
-            return;
+            throw new Error('Map library not loaded. Please check your internet connection.');
         }
+        
+        console.log('Map configuration validated, creating map...');
 
         // Initialize the map
         const map = L.map('map-container', {
