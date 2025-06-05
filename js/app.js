@@ -1,12 +1,16 @@
 // Main app functionality
 document.addEventListener('DOMContentLoaded', () => {
-    // Ensure CONFIG is loaded
-    if (typeof CONFIG === 'undefined') {
-        console.error('Configuration not loaded. Please check if config.js is loaded properly.');
-        return;
-    }
-    
-    initializeApp();
+    // Wait a moment to ensure CONFIG is loaded
+    setTimeout(() => {
+        console.log('Checking configuration...');
+        if (typeof CONFIG === 'undefined') {
+            console.error('Configuration not loaded. Please check if config.js is loaded properly.');
+            document.body.innerHTML += '<div style="color: red; padding: 20px;">Error: Configuration not loaded. Check console for details.</div>';
+            return;
+        }
+        console.log('Configuration loaded:', CONFIG);
+        initializeApp();
+    }, 500);
 });
 
 async function initializeApp() {
@@ -43,13 +47,16 @@ function addSmoothScrolling() {
 }
 
 async function updateWeatherPreviews() {
+    console.log('Updating weather previews...');
     // Check if API key is configured
     if (!CONFIG.WEATHER_API_KEY || CONFIG.WEATHER_API_KEY === 'your_openweathermap_api_key') {
+        console.error('Weather API key not configured or invalid');
         for (const locationId of Object.keys(CONFIG.BEACHES)) {
             showWeatherError(locationId, 'Weather API key not configured');
         }
         return;
     }
+    console.log('Weather API key found:', CONFIG.WEATHER_API_KEY);
 
     for (const [locationId, beachInfo] of Object.entries(CONFIG.BEACHES)) {
         try {
@@ -64,12 +71,27 @@ async function updateWeatherPreviews() {
 }
 
 async function fetchWeather(lat, lon) {
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${CONFIG.WEATHER_API_KEY}`;
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error(`Weather API error: ${response.statusText}`);
+    try {
+        console.log(`Fetching weather for coordinates: ${lat}, ${lon}`);
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${CONFIG.WEATHER_API_KEY}`;
+        console.log('Fetching from URL:', url);
+        
+        const response = await fetch(url);
+        console.log('Response status:', response.status);
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('API Error response:', errorText);
+            throw new Error(`Weather API error: ${response.status} ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        console.log('Weather data received:', data);
+        return data;
+    } catch (error) {
+        console.error('Error fetching weather:', error);
+        throw error;
     }
-    return await response.json();
 }
 
 function updateWeatherUI(locationId, weatherData) {

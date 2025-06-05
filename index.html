@@ -67,29 +67,42 @@
         </div>
     </footer>    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Load configuration and initialize app
-        function loadApp() {
+        window.addEventListener('load', function() {
+            console.log('Window loaded, initializing app...');
+            
+            // Function to load scripts in sequence
+            function loadScript(src) {
+                return new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = src;
+                    script.onload = resolve;
+                    script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+                    document.body.appendChild(script);
+                });
+            }
+            
+            // Determine which config to load
             const isGitHubPages = window.location.hostname.includes('github.io');
-            const configScript = document.createElement('script');
-            configScript.src = isGitHubPages ? 'js/config.prod.js' : 'js/config.js';
+            const configPath = isGitHubPages ? 'js/config.prod.js' : 'js/config.js';
             
-            configScript.onload = () => {
-                // Load app.js after config is loaded
-                const appScript = document.createElement('script');
-                appScript.src = 'js/app.js';
-                document.body.appendChild(appScript);
-            };
-            
-            configScript.onerror = () => {
-                console.error('Failed to load configuration');
-                alert('Failed to load configuration. Please ensure config.js exists.');
-            };
-            
-            document.head.appendChild(configScript);
-        }
-        
-        // Start loading the application
-        loadApp();
+            // Load config then app
+            loadScript(configPath)
+                .then(() => {
+                    console.log('Config loaded successfully');
+                    return loadScript('js/app.js');
+                })
+                .then(() => {
+                    console.log('App loaded successfully');
+                })
+                .catch(error => {
+                    console.error('Error loading scripts:', error);
+                    document.body.innerHTML += `
+                        <div style="color: red; padding: 20px;">
+                            Error loading application: ${error.message}
+                        </div>
+                    `;
+                });
+        });
     </script>
 </body>
 </html>
