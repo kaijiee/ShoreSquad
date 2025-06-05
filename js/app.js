@@ -1,16 +1,20 @@
 // Main app functionality
 document.addEventListener('DOMContentLoaded', () => {
-    // Wait a moment to ensure CONFIG is loaded
-    setTimeout(() => {
-        console.log('Checking configuration...');
-        if (typeof CONFIG === 'undefined') {
-            console.error('Configuration not loaded. Please check if config.js is loaded properly.');
-            document.body.innerHTML += '<div style="color: red; padding: 20px;">Error: Configuration not loaded. Check console for details.</div>';
-            return;
-        }
-        console.log('Configuration loaded:', CONFIG);
-        initializeApp();
-    }, 500);
+    console.log('DOM Content Loaded, checking configuration...');
+    if (typeof CONFIG === 'undefined') {
+        console.error('Configuration not loaded. Please check if config.js is loaded properly.');
+        showError('Configuration not loaded. Please refresh the page.');
+        return;
+    }
+    
+    if (!CONFIG.WEATHER_API_KEY) {
+        console.error('Weather API key not found in configuration');
+        showError('Weather API key not configured.');
+        return;
+    }
+    
+    console.log('Configuration loaded successfully');
+    initializeApp();
 });
 
 async function initializeApp() {
@@ -222,6 +226,13 @@ function showMapError(message) {
     if (mapContainer) {
         mapContainer.innerHTML = `<div class="map-error">${message}</div>`;
     }
+}
+
+function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'app-error';
+    errorDiv.textContent = message;
+    document.body.insertBefore(errorDiv, document.body.firstChild);
 }
 
 // Animation on scroll
